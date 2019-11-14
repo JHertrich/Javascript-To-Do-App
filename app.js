@@ -12,7 +12,6 @@ $(".date").html(year + ' ' + month + ' ' + day);
 var circleEmpty = '<i class="far fa-circle"></i>';
 var trash = '<i class="far fa-trash-alt"></i>';
 
-
 // CALL ADD TASK
 $("#plusBtn").click(addTask);
 
@@ -21,7 +20,7 @@ $("#plusBtn").click(addTask);
 function addTask() {
     var task = $(".item input").val();
 
-    contentText =
+    var contentText =
         '<li>'
         + circleEmpty
         + '<p>'
@@ -29,7 +28,7 @@ function addTask() {
         + '</p>'
         + trash
         + '</li>';
-
+       
     $(".content ul").append(contentText);
 
     $(".content ul li").css({
@@ -43,24 +42,27 @@ function addTask() {
     //CALL STORE TO LOCAL STORAGE
     storeToLocalStorage(task);
 
+
     //REMOVE TASK + CALL REMOVE FROM LOCAL STORAGE
-    $("li :nth-child(3)").click(removeTask);
-    function removeTask() {
+    $("li:last-child :nth-child(3)").click(removeTask);
+    
+
+    //TASK DONE
+    $("li:last-child :nth-child(1)").click(taskDone);
+    
+}
+
+function removeTask() {
         $(this).parent().remove();
         removeFromLocalStorage($(this).parent(':nth-child(1)').text());
     }
-
-    //TASK DONE
-    $("li :nth-child(1)").click(taskDone);
-    function taskDone() {
+function taskDone() {
         $(this).next().css({
             "text-decoration": "line-through",
             "color": "rgb(101, 101, 101)"
         });
         $(this).addClass("fas fa-check-circle").removeClass("far fa-circle");
     }
-}
-
 
 //STORE TO LOCAL STORAGE
 function storeToLocalStorage(task) {
@@ -111,6 +113,15 @@ function getFromLocalStorage() {
             "align-items": "center"
         });
     });
+	
+	//REMOVE TASK + CALL REMOVE FROM LOCAL STORAGE
+    $("li :nth-child(3)").click(removeTask);
+    
+
+    //TASK DONE
+    $("li :nth-child(1)").click(taskDone);
+	
+	
 }
 
 //REMOVE FROM LOCAL STORAGE (BY SPLICING FROM ARRAY + SET NEW ARRAY TO LOCAL STORAGE)
@@ -126,9 +137,9 @@ function removeFromLocalStorage(task) {
 
     tasks.forEach(function (taskItem, index) {
         if (task === taskItem) {
-            tasks.splice(index, 1)
+            tasks.splice(index, 1);
         }
-    })
+    });
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
@@ -143,10 +154,6 @@ function clearContent() {
 function clearLocalStorage() {
     localStorage.clear();
 }
-
-
-
-
 
 
 
